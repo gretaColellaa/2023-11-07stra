@@ -2,56 +2,50 @@ import flet as ft
 
 
 class View(ft.UserControl):
-    def __init__(self, page: ft.Page):
-        super().__init__()
-        # page stuff
+
+
+    def __init__(self, page):
         self._page = page
-        self._page.title = "Template application using MVC and DAO"
-        self._page.horizontal_alignment = 'CENTER'
-        self._page.theme_mode = ft.ThemeMode.DARK
-        # controller (it is not initialized. Must be initialized in the main, after the controller is created)
         self._controller = None
-        # graphical elements
-        self._title = None
-        self.txt_name = None
-        self.btn_hello = None
+        self.dd_year = None
+        self.dd_team = None
+        self.txt_squadre = None
         self.txt_result = None
-        self.txt_container = None
+        self.btn_crea_grafo = None
+        self.btn_dettagli = None
 
     def load_interface(self):
-        # title
-        self._title = ft.Text("Hello World", color="blue", size=24)
+        self._title = ft.Text("Campionato Formula1", color="blue", size=24)
         self._page.controls.append(self._title)
 
-        #ROW with some controls
-        # text field for the name
-        self.txt_name = ft.TextField(
-            label="name",
-            width=200,
-            hint_text="Insert a your name"
-        )
+        # Dropdown anno
+        self.dd_year = ft.Dropdown(label="Seleziona Anno", on_change=self._controller.handle_anno_selezionato)
+        self._page.controls.append(self.dd_year)
+        self._controller.fillDDyear()
 
-        # button for the "hello" reply
-        self.btn_hello = ft.ElevatedButton(text="Hello", on_click=self._controller.handle_hello)
-        row1 = ft.Row([self.txt_name, self.btn_hello],
-                      alignment=ft.MainAxisAlignment.CENTER)
-        self._page.controls.append(row1)
+        # Area per visualizzare le squadre (txtSquadre)
+        self.txt_squadre = ft.ListView(expand=1, spacing=5, padding=10, auto_scroll=True, height=150)
+        self._page.controls.append(ft.Text("Squadre nell'anno selezionato:"))
+        self._page.controls.append(self.txt_squadre)
 
-        # List View where the reply is printed
-        self.txt_result = ft.ListView(expand=1, spacing=10, padding=20, auto_scroll=True)
+        # Dropdown per squadra da selezionare
+        self.dd_team = ft.Dropdown(label="Seleziona Squadra")
+        self._page.controls.append(self.dd_team)
+
+        # Bottone per creare il grafo
+        self.btn_crea_grafo = ft.ElevatedButton(text="Crea Grafo", on_click=self._controller.handle_crea_grafo)
+        self._page.controls.append(self.btn_crea_grafo)
+
+        # Bottone per dettagli adiacenze
+        self.btn_dettagli = ft.ElevatedButton(text="Dettagli", on_click=self._controller.handle_dettagli)
+        self._page.controls.append(self.btn_dettagli)
+
+        # Area risultati (txtResult)
+        self.txt_result = ft.ListView(expand=1, spacing=5, padding=10, auto_scroll=True, height=200)
+        self._page.controls.append(ft.Text("Risultati:"))
         self._page.controls.append(self.txt_result)
+
         self._page.update()
-
-    @property
-    def controller(self):
-        return self._controller
-
-    @controller.setter
-    def controller(self, controller):
-        self._controller = controller
-
-    def set_controller(self, controller):
-        self._controller = controller
 
     def create_alert(self, message):
         dlg = ft.AlertDialog(title=ft.Text(message))
@@ -61,3 +55,7 @@ class View(ft.UserControl):
 
     def update_page(self):
         self._page.update()
+
+    def set_controller(self, controller):
+        self._controller = controller
+
