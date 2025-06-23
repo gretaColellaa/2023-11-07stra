@@ -38,6 +38,17 @@ class Controller:
             self._view.create_alert("selezionare un team")
 
 
+    def handle_path(self, e):
+        if self._view.dd_team.value is not None:
+            self._view.txt_result.clean()
+            path, peso = self._model.cerca_cammino(self._view.dd_team.value)
+            self._view.txt_result.controls.append(ft.Text(f"cammino di peso : {peso} "))
+            for nodo in path:
+                print(nodo)
+                self._view.txt_result.controls.append(ft.Text(f"{nodo} "))
+            self._view.update_page()
+        else:
+            self._view.create_alert("selezionare un team")
 
 
 

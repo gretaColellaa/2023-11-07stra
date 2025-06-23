@@ -40,6 +40,9 @@ class View(ft.UserControl):
         self.btn_dettagli = ft.ElevatedButton(text="Dettagli", on_click=self._controller.handle_dettagli)
         self._page.controls.append(self.btn_dettagli)
 
+        self.btn_path = ft.ElevatedButton(text="Cammino", on_click=self._controller.handle_path)
+        self._page.controls.append(self.btn_path)
+
         # Area risultati (txtResult)
         self.txt_result = ft.ListView(expand=1, spacing=5, padding=10, auto_scroll=True, height=200)
         self._page.controls.append(ft.Text("Risultati:"))
